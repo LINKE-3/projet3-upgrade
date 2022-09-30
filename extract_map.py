@@ -41,6 +41,8 @@ place = map_place(carte, n, m)
 
 
 def get_random_place(place, n=3):
+    place.remove([1, 1])
+    place.remove([13, 13])
     random_place = []
     lieu = np.random.choice(len(place), size=n, replace=False)
     for i in lieu:
