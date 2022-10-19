@@ -9,21 +9,25 @@ class Testmap(unittest.TestCase):
     def setUp(self):
         self.map = [['1','0','1','1'], ['0','0','0','0'], ['1','0','1','0']]
         self.map2 = [['1','1','1','1'], ['1','0','1','0'], ['1','1','1','0']]
+        self.map3 = [['1','1','1','1','1'], ['1','0','0','0','1'], ['1','1','1','0','1'], ['1','0','0','0','1']]
         self.random = [[1, 0], [1, 1], [2, 1], [1, 2], [1, 3], [2, 3]]
         self.items = [[50, 100], [100, 50], [0, 50]]
         self.n = 4
         self.m = 3
+        self.END_X = 3
+        self.END_Y = 1
         self.macgyver = McGyver(self.map)
         self.macgyver2 = McGyver(self.map2)
+        self.macgyver3 = McGyver(self.map3)
         self.display_temps = View.display_temps(self)
 
         #self.controlall = Controller.game_loop2(self, self.items, self.macgyver)
         #self.control = Controller.game_loop2(self.macgyver)
 
+    #read_map
     def test_map_place(self):
         expected_value = [[1, 0], [0, 1], [1, 1], [2, 1], [1, 2], [1, 3], [2, 3]]
         self.assertEqual(map_place(self.map, self.n, self.m), expected_value)
-
 
     def test_get_random_place(self):
         expected_value = 3
@@ -87,14 +91,14 @@ class Testmap(unittest.TestCase):
     #end condition
     def test_end_game_win(self):
         self.macgyver.items = 3
-        self.macgyver.position.x = 13
+        self.macgyver.position.x = 3
         self.macgyver.position.y = 1        
         expected_value = True
         self.assertEqual(Controller.end_conditions(self, self.macgyver), self.winorlose, expected_value)
 
     def test_end_game_lose(self):
         self.macgyver.items = 2
-        self.macgyver.position.x = 13
+        self.macgyver.position.x = 3
         self.macgyver.position.y = 1        
         expected_value = False
         Controller.end_conditions(self, self.macgyver)
@@ -107,7 +111,59 @@ class Testmap(unittest.TestCase):
         expected_value = False
         Controller.end_conditions(self, self.macgyver)
         self.assertEqual(Controller.end_conditions(self, self.macgyver), self.winorlose, expected_value)
-    
+
+    #scénario tests fonctionnels
+    def test_win(self):
+        self.END_X = 3
+        self.END_Y = 1
+        self.macgyver3.items = 0
+        self.macgyver3.position.x = 1
+        self.macgyver3.position.y = 1
+        self.items = [[50, 100], [100, 150], [150, 100]]
+        self.macgyver3.move("HAUT")
+        Controller.game_loop2(self, self.items, self.macgyver3)
+        self.assertEqual(self.macgyver3.items, 1)
+        self.macgyver3.move("HAUT")
+        self.macgyver3.move("DROITE")
+        Controller.game_loop2(self, self.items, self.macgyver3)
+        self.assertEqual(self.macgyver3.items, 2)
+        self.macgyver3.move("DROITE")
+        self.macgyver3.move("BAS")
+        Controller.game_loop2(self, self.items, self.macgyver3)
+        self.assertEqual(self.macgyver3.items, 3)
+        self.macgyver3.move("BAS")
+        print(self.macgyver3.position.x, self.macgyver3.position.y)
+        self.assertEqual(Controller.end_conditions(self, self.macgyver3), True)
+        first = 23
+        second = 27
+        third = 29
+        self.seconds = 21
+        expected_value = 21, 23, 27
+        self.assertEqual(View.check_score(self, first, second, third), expected_value)
+
+    def test_loose(self):
+        self.END_X = 3
+        self.END_Y = 1
+        self.macgyver3.items = 0
+        self.macgyver3.position.x = 1
+        self.macgyver3.position.y = 1
+        self.items = [[50, 100], [150, 150], [150, 100]]
+        self.macgyver3.move("HAUT")
+        Controller.game_loop2(self, self.items, self.macgyver3)
+        self.assertEqual(self.macgyver3.items, 1)
+        self.macgyver3.move("HAUT")
+        self.macgyver3.move("DROITE")
+        Controller.game_loop2(self, self.items, self.macgyver3)
+        self.assertEqual(self.macgyver3.items, 1)
+        self.macgyver3.move("DROITE")
+        self.macgyver3.move("BAS")
+        Controller.game_loop2(self, self.items, self.macgyver3)
+        self.assertEqual(self.macgyver3.items, 2)
+        self.macgyver3.move("BAS")
+        print(self.macgyver3.position.x, self.macgyver3.position.y)
+        self.assertEqual(Controller.end_conditions(self, self.macgyver3), self.winorlose, False)
+        self.assertEqual(View.sauvegarde(self, self.winorlose), False)
+
     #chrono
     def test_lauch_chrono(self):
         stopchrono = 1
@@ -158,3 +214,4 @@ class Testmap(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
