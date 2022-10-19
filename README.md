@@ -16,3 +16,4 @@ Pour lancer les tests dirigez vous dans le répertoire principale avec vautre cm
 
 reset leaderboard:
 dirigez vous dans le répertoire principale avec vautre cmd et utiliser la command `python reset_and_init.py`
+test coverage: `coverage run -m unittest test.py` `coverage report -m`
