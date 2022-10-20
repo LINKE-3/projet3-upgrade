@@ -1,5 +1,5 @@
 import numpy as np
-from constants import PATH
+PATH = "ressource\\p3.txt"
 
 
 def read_map():
@@ -12,7 +12,7 @@ def read_map():
                 if charcater == '0' or charcater == '1':
                     to_add.append(charcater)
             map.append(to_add)
-    
+
     return map
 
 
@@ -22,8 +22,10 @@ map = read_map()
 
 carte = map
 
-n =15
-m =15
+n = 15
+m = 15
+
+
 def map_place(carte, n, m):
 
     place = []
@@ -41,8 +43,11 @@ place = map_place(carte, n, m)
 
 
 def get_random_place(place, n=3):
-    place.remove([1, 1])
-    place.remove([13, 13])
+    if [1, 1] in place:
+        place.remove([1, 1])
+    if [13, 13] in place:
+        place.remove([13, 13])
+
     random_place = []
     lieu = np.random.choice(len(place), size=n, replace=False)
     for i in lieu:
