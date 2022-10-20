@@ -21,7 +21,6 @@ class McGyver():
         self.items = 0
         # define the hero coordinates on the map
 
-
     def move(self, input):
         a = True
         if (input == "HAUT" and
@@ -36,9 +35,5 @@ class McGyver():
         elif (input == "GAUCHE" and
               self.map[self.position.x-1][self.position.y] == "0"):
             self.position.x -= 1
-        else:
-            a = False
+
         return a
-
-
-        # move the hero on the map
